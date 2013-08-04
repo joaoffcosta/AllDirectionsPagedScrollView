@@ -21,6 +21,7 @@
     [scrollView setBackgroundColor:[UIColor yellowColor]];
     [scrollView setContentSize:scrollSize];
     [scrollView setPagingEnabled:YES];
+    [scrollView setDelegate:self];
     [self.view addSubview:scrollView];
     
     for (int h = 0; h < HOR_PAGES; h++) {
