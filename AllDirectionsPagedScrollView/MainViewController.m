@@ -136,19 +136,44 @@ enum ScrollDirection {
     }
 }
 
-- (float)pageOffsetForOffset:(float)offset pageSize:(float)pageSize
+- (float)pageOffsetForOffset:(float)offset
+                    pageSize:(float)pageSize
+                    numPages:(int)numPages
 {
-    float exactPositionInPages = (offset + pageSize / 2.0) / pageSize;
+    float exactPositionInPages = MAX(0,MIN(numPages - 1, (offset + pageSize / 2.0) / pageSize));
     return floorf(exactPositionInPages) * pageSize;
 }
 
 - (CGPoint)pagePositionForOffset:(CGPoint)offset frameSize:(CGSize)size
 {
     CGPoint pageOffset = self.initialOffset;
+    
     if ([self isHorizontalScroll]) {
-        pageOffset.x = [self pageOffsetForOffset:offset.x pageSize:size.width];
+        // is an horizontal scroll
+        if (offset.x > self.initialOffset.x) {
+            // and now is going to the right
+            pageOffset.x = [self pageOffsetForOffset:pageOffset.x + size.width
+                                            pageSize:size.width
+                                            numPages:HOR_PAGES];
+        } else if (offset.x < self.initialOffset.x) {
+            // and now is going to the left
+            pageOffset.x = [self pageOffsetForOffset:pageOffset.x - size.width
+                                            pageSize:size.width
+                                            numPages:HOR_PAGES];
+        }
     } else {
-        pageOffset.y = [self pageOffsetForOffset:offset.y pageSize:size.height];
+        // is a vertical scroll
+        if (offset.y > self.initialOffset.y) {
+            // and now is going down
+            pageOffset.y = [self pageOffsetForOffset:pageOffset.y + size.height
+                                            pageSize:size.height
+                                            numPages:VER_PAGES];
+        } else if (offset.y < self.initialOffset.y) {
+            // and now is going up
+            pageOffset.y = [self pageOffsetForOffset:pageOffset.y - size.height
+                                            pageSize:size.height
+                                            numPages:VER_PAGES];
+        }
     }
     return pageOffset;
 }
