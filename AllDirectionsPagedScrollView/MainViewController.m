@@ -92,15 +92,6 @@ enum ScrollDirection {
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     self.isDragging = NO;
-
-    if (!decelerate) {
-        [scrollView setContentOffset:self.targetOffset animated:YES];
-    }
-}
-
-- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
-{
-    [scrollView setContentOffset:self.targetOffset animated:YES];
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
@@ -109,6 +100,8 @@ enum ScrollDirection {
 {
     self.targetOffset = [self pagePositionForOffset:*targetContentOffset
                                           frameSize:scrollView.frame.size];
+    targetContentOffset->x = self.targetOffset.x;
+    targetContentOffset->y = self.targetOffset.y;
 }
 
 #pragma mark - Helper Methods
