@@ -20,8 +20,6 @@
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     [scrollView setBackgroundColor:[UIColor yellowColor]];
     [scrollView setContentSize:scrollSize];
-    [scrollView setPagingEnabled:YES];
-    [scrollView setDirectionalLockEnabled:YES];
     [scrollView setDelegate:self];
     [self.view addSubview:scrollView];
     
