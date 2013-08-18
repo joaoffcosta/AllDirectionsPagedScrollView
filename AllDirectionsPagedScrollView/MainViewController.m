@@ -93,6 +93,13 @@ enum ScrollDirection {
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     self.isDragging = NO;
+    
+    if (!decelerate) {
+        // user dropped scrollView without any acceleration
+        self.targetOffset = [self pageOffsetForOffset:scrollView.contentOffset
+                                           scrollView:scrollView];
+        [scrollView setContentOffset:self.targetOffset animated:YES];
+    }
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
