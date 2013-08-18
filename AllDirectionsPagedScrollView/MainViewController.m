@@ -72,14 +72,16 @@ enum ScrollDirection {
         self.scrollDirection = [self scrollDirectionForOffset:scrollView.contentOffset];
     }
     
-    if ([self isHorizontalScroll]) {
-        [scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x,
-                                                 self.initialOffset.y)
-                            animated:NO];
-    } else {
-        [scrollView setContentOffset:CGPointMake(self.initialOffset.x,
-                                                 scrollView.contentOffset.y)
-                            animated:NO];
+    if (self.isDragging) {
+        if ([self isHorizontalScroll]) {
+            [scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x,
+                                                     self.initialOffset.y)
+                                animated:NO];
+        } else {
+            [scrollView setContentOffset:CGPointMake(self.initialOffset.x,
+                                                     scrollView.contentOffset.y)
+                                animated:NO];
+        }
     }
 }
 
