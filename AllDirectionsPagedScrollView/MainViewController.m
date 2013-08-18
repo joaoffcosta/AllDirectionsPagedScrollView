@@ -10,6 +10,7 @@ enum ScrollDirection {
 @interface MainViewController ()
 
 @property(assign) CGPoint initialOffset;
+@property(assign) CGPoint targetOffset;
 @property(assign) enum ScrollDirection scrollDirection;
 @property(assign) BOOL waitingFirstScroll;
 @property(assign) BOOL isDragging;
@@ -90,19 +91,21 @@ enum ScrollDirection {
     self.isDragging = NO;
 
     if (!decelerate) {
-        [scrollView setContentOffset:
-         [self pagePositionForOffset:scrollView.contentOffset
-                           frameSize:scrollView.frame.size]
-                            animated:YES];
+        [scrollView setContentOffset:self.targetOffset animated:YES];
     }
 }
 
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
 {
-    [scrollView setContentOffset:
-     [self pagePositionForOffset:scrollView.contentOffset
-                       frameSize:scrollView.frame.size]
-                        animated:YES];
+    [scrollView setContentOffset:self.targetOffset animated:YES];
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
+                     withVelocity:(CGPoint)velocity
+              targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    self.targetOffset = [self pagePositionForOffset:*targetContentOffset
+                                          frameSize:scrollView.frame.size];
 }
 
 #pragma mark - Helper Methods
