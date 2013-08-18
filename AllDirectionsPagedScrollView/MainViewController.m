@@ -64,8 +64,6 @@ enum ScrollDirection {
     if (scrollView.contentOffset.x == self.targetOffset.x && scrollView.contentOffset.y == self.targetOffset.y) {
         self.initialOffset = scrollView.contentOffset;
         self.waitingFirstScroll = YES;
-    } else {
-        self.initialOffset = self.targetOffset;
     }
     self.isDragging = YES;
 }
