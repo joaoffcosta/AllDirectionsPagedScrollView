@@ -88,6 +88,21 @@ enum ScrollDirection {
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     self.isDragging = NO;
+
+    if (!decelerate) {
+        [scrollView setContentOffset:
+         [self pagePositionForOffset:scrollView.contentOffset
+                           frameSize:scrollView.frame.size]
+                            animated:YES];
+    }
+}
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+    [scrollView setContentOffset:
+     [self pagePositionForOffset:scrollView.contentOffset
+                       frameSize:scrollView.frame.size]
+                        animated:YES];
 }
 
 #pragma mark - Helper Methods
@@ -117,6 +132,23 @@ enum ScrollDirection {
             return ScrollUp;
         }
     }
+}
+
+- (float)pageOffsetForOffset:(float)offset pageSize:(float)pageSize
+{
+    float exactPositionInPages = (offset + pageSize / 2.0) / pageSize;
+    return floorf(exactPositionInPages) * pageSize;
+}
+
+- (CGPoint)pagePositionForOffset:(CGPoint)offset frameSize:(CGSize)size
+{
+    CGPoint pageOffset = self.initialOffset;
+    if ([self isHorizontalScroll]) {
+        pageOffset.x = [self pageOffsetForOffset:offset.x pageSize:size.width];
+    } else {
+        pageOffset.y = [self pageOffsetForOffset:offset.y pageSize:size.height];
+    }
+    return pageOffset;
 }
 
 @end
