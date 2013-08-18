@@ -12,6 +12,7 @@ enum ScrollDirection {
 @property(assign) CGPoint initialOffset;
 @property(assign) enum ScrollDirection scrollDirection;
 @property(assign) BOOL waitingFirstScroll;
+@property(assign) BOOL isDragging;
 
 @end
 
@@ -51,14 +52,16 @@ enum ScrollDirection {
     }
     
     self.waitingFirstScroll = NO;
+    self.isDragging = NO;
 }
 
-#pragma mark UIScrollViewDelegate
+#pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     self.initialOffset = scrollView.contentOffset;
     self.waitingFirstScroll = YES;
+    self.isDragging = YES;
     NSLog(@"Offset before drag starts: (%f,%f)", scrollView.contentOffset.x, scrollView.contentOffset.y);
 }
 
@@ -79,6 +82,13 @@ enum ScrollDirection {
                             animated:NO];
     }
 }
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    self.isDragging = NO;
+}
+
+#pragma mark - Helper Methods
 
 - (BOOL)isHorizontalScroll
 {
