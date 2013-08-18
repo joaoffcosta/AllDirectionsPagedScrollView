@@ -30,6 +30,7 @@ enum ScrollDirection {
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     [scrollView setBackgroundColor:[UIColor yellowColor]];
     [scrollView setContentSize:scrollSize];
+    [scrollView setDecelerationRate:UIScrollViewDecelerationRateFast];
     [scrollView setDelegate:self];
     [self.view addSubview:scrollView];
     
