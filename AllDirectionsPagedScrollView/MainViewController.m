@@ -142,6 +142,18 @@ enum ScrollDirection {
     return MAX(0,MIN(numPages - 1, floorf(exactPositionInPages))) * pageSize;
 }
 
+- (CGPoint)pageOffsetForOffset:(CGPoint)offset scrollView:(UIScrollView*)scrollView
+{
+    float pageWidth   = scrollView.frame.size.width;
+    float pageHeight  = scrollView.frame.size.height;
+    float numHorPages = scrollView.contentSize.width / pageWidth;
+    float numVerPages = scrollView.contentSize.height / pageHeight;
+    float pagePosX    = [self pageOffsetForOffset:offset.x pageSize:pageWidth numPages:numHorPages];
+    float pagePosY    = [self pageOffsetForOffset:offset.y pageSize:pageHeight numPages:numVerPages];
+    
+    return CGPointMake(pagePosX, pagePosY);
+}
+
 - (CGPoint)pagePositionForOffset:(CGPoint)offset frameSize:(CGSize)size
 {
     CGPoint pageOffset = self.initialOffset;
