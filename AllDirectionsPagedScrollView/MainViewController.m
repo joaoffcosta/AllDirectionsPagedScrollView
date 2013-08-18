@@ -5,6 +5,8 @@
 
 @interface MainViewController ()
 
+@property(assign) CGPoint initialOffset;
+
 @end
 
 @implementation MainViewController
@@ -41,6 +43,14 @@
             [scrollView addSubview:view];
         }
     }
+}
+
+#pragma mark UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    self.initialOffset = scrollView.contentOffset;
+    NSLog(@"Offset before drag starts: (%f,%f)", scrollView.contentOffset.x, scrollView.contentOffset.y);
 }
 
 @end
