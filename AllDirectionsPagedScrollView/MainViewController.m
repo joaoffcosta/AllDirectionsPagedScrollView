@@ -138,8 +138,8 @@ enum ScrollDirection {
                     pageSize:(float)pageSize
                     numPages:(int)numPages
 {
-    float exactPositionInPages = MAX(0,MIN(numPages - 1, (offset + pageSize / 2.0) / pageSize));
-    return floorf(exactPositionInPages) * pageSize;
+    float exactPositionInPages = (offset + pageSize / 2.0) / pageSize;
+    return MAX(0,MIN(numPages - 1, floorf(exactPositionInPages))) * pageSize;
 }
 
 - (CGPoint)pagePositionForOffset:(CGPoint)offset frameSize:(CGSize)size
