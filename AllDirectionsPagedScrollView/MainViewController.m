@@ -68,6 +68,21 @@ enum ScrollDirection {
         self.waitingFirstScroll = NO;
         self.scrollDirection = [self scrollDirectionForOffset:scrollView.contentOffset];
     }
+    
+    if ([self isHorizontalScroll]) {
+        [scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x,
+                                                 self.initialOffset.y)
+                            animated:NO];
+    } else {
+        [scrollView setContentOffset:CGPointMake(self.initialOffset.x,
+                                                 scrollView.contentOffset.y)
+                            animated:NO];
+    }
+}
+
+- (BOOL)isHorizontalScroll
+{
+    return self.scrollDirection == ScrollLeft || self.scrollDirection == ScrollRight;
 }
 
 - (enum ScrollDirection)scrollDirectionForOffset:(CGPoint)offset
