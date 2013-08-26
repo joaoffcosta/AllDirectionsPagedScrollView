@@ -61,10 +61,8 @@ enum ScrollDirection {
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    if (scrollView.contentOffset.x == self.targetOffset.x && scrollView.contentOffset.y == self.targetOffset.y) {
-        self.initialOffset = scrollView.contentOffset;
-        self.waitingFirstScroll = YES;
-    }
+    self.initialOffset = [self pageOffsetForScrollView:scrollView];
+    self.waitingFirstScroll = YES;
     self.isDragging = YES;
 }
 
