@@ -103,10 +103,13 @@ enum ScrollDirection {
                      withVelocity:(CGPoint)velocity
               targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    self.targetOffset = [self pagePositionForOffset:*targetContentOffset
-                                          frameSize:scrollView.frame.size];
-    targetContentOffset->x = self.targetOffset.x;
-    targetContentOffset->y = self.targetOffset.y;
+    if (velocity.x != 0 || velocity.y != 0) {
+        // define target offset to stop in a page
+        self.targetOffset = [self pagePositionForOffset:*targetContentOffset
+                                              frameSize:scrollView.frame.size];
+        targetContentOffset->x = self.targetOffset.x;
+        targetContentOffset->y = self.targetOffset.y;
+    }
 }
 
 #pragma mark - Helper Methods
