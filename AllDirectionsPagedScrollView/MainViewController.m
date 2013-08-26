@@ -94,8 +94,7 @@ enum ScrollDirection {
     
     if (!decelerate) {
         // user dropped scrollView without any acceleration
-        self.targetOffset = [self pageOffsetForOffset:scrollView.contentOffset
-                                           scrollView:scrollView];
+        self.targetOffset = [self pageOffsetForScrollView:scrollView];
         [scrollView setContentOffset:self.targetOffset animated:YES];
     }
 }
@@ -147,14 +146,18 @@ enum ScrollDirection {
     return MAX(0,MIN(numPages - 1, floorf(exactPositionInPages))) * pageSize;
 }
 
-- (CGPoint)pageOffsetForOffset:(CGPoint)offset scrollView:(UIScrollView*)scrollView
+- (CGPoint)pageOffsetForScrollView:(UIScrollView*)scrollView
 {
     float pageWidth   = scrollView.frame.size.width;
     float pageHeight  = scrollView.frame.size.height;
     float numHorPages = scrollView.contentSize.width / pageWidth;
     float numVerPages = scrollView.contentSize.height / pageHeight;
-    float pagePosX    = [self pageOffsetForOffset:offset.x pageSize:pageWidth numPages:numHorPages];
-    float pagePosY    = [self pageOffsetForOffset:offset.y pageSize:pageHeight numPages:numVerPages];
+    float pagePosX    = [self pageOffsetForOffset:scrollView.contentOffset.x
+                                         pageSize:pageWidth
+                                         numPages:numHorPages];
+    float pagePosY    = [self pageOffsetForOffset:scrollView.contentOffset.y
+                                         pageSize:pageHeight
+                                         numPages:numVerPages];
     
     return CGPointMake(pagePosX, pagePosY);
 }
